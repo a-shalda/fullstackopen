@@ -4,37 +4,44 @@ const Statistics = ({ good, neutral, bad, total}) => {
 
   if (good + neutral + bad === 0) return 'No feedback given'
   else return (
-    <>
-      <StatisticLine 
-        title='Good'
-        value={good}
-      />
-      <StatisticLine 
-        title='Neutral'
-        value={neutral}
-      />
-      <StatisticLine 
-        title='Bad'
-        value={bad}
-      />
-      <StatisticLine 
-        title='Total'
-        value={total}
-      />
-      <StatisticLine 
-        title='Average'
-        value={Math.floor((good - bad) * 100 / total) / 100}
-      />
-      <StatisticLine 
-        title='Positive'
-        value={Math.floor(good / (good + neutral + bad) * 1000) / 10 + '%'}
-      />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine 
+          title='Good'
+          value={good}
+        />
+        <StatisticLine 
+          title='Neutral'
+          value={neutral}
+        />
+        <StatisticLine 
+          title='Bad'
+          value={bad}
+        />
+        <StatisticLine 
+          title='Total'
+          value={total}
+        />
+        <StatisticLine 
+          title='Average'
+          value={Math.floor((good - bad) * 100 / total) / 100}
+        />
+        <StatisticLine 
+          title='Positive'
+          value={Math.floor(good / (good + neutral + bad) * 1000) / 10 + '%'}
+        />
+      </tbody>
+    </table>
   )
 }
 
 const StatisticLine = ({ title, value}) => {
-  return <p>{title}: {value}</p>
+  return (
+    <tr>
+      <td>{title}:&nbsp;</td>
+      <td>{value}</td>
+    </tr>
+  )
 }
 
 const Button = ({ title, handleClick}) => {
