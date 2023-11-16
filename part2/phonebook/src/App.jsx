@@ -1,21 +1,10 @@
 import { useState } from 'react'
+import { Numbers } from './Numbers'
+import { Search } from './Search'
+import { Add } from './Add'
 
-let id = 4
 
-const Numbers = ( { persons, search } ) => {
-  if (search === '') {
-    return persons.map(person => {
-      return <p key={person.name}>{person.name} {person.number}</p>
-    })
-  }
-  else {
-    return persons.map(person => {
-      if (person.name.toLowerCase().includes(search.toLowerCase())) {
-        return <p key={person.name}>{person.name} {person.number}</p>
-      };
-    })
-  }
-}
+let id = 5
 
 const App = () => {
 
@@ -39,8 +28,6 @@ const App = () => {
   const handleNumber = e => setNewNumber(e.target.value)
   const handleSearch = e => setSearch(e.target.value)
 
-  console.log(search);
-
   const handleAdd = () => {
     const exists = (persons.some(person => person.name === newName))
     !exists ? setPersons([...persons, {name: newName, number: newNumber, id: id++}]) : alert(`${newName} is already added to phonebook`)
@@ -51,28 +38,23 @@ const App = () => {
       <h2>Phonebook</h2>
       <p>filter shown with 
 
-        <input
-          onChange={handleSearch}
-          value={search}
+        <Search 
+          handleSearch={handleSearch}
+          search={search}
         />
-    
+
       </p>
       <form 
         onSubmit={handleSubmit} 
        >
-        <div>
-        <h2>add a new</h2>
-          name: <input 
-            onChange={handleName}
-            value={newName}
-          />
-        </div>
-        <div>
-          number: <input 
-            onChange={handleNumber}
-            value={newNumber}
-          />
-        </div>
+
+        <Add 
+          newName={newName} 
+          newNumber={newNumber} 
+          handleName={handleName} 
+          handleNumber={handleNumber}
+        />
+
         <div>
           <button 
             type="submit"
@@ -81,10 +63,12 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
+
         <Numbers 
           persons={persons}
           search={search}
         />
+        
     </div>
   )
 }
