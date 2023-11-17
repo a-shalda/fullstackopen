@@ -3,23 +3,21 @@ import axios from 'axios'
 import { Numbers } from './Numbers'
 import { Search } from './Search'
 import { Add } from './Add'
+import personsService from './services/persons.js'
 
 let id = 5
 
 const App = () => {
 
-  const [persons, setPersons] = useState([]) 
-
+  const [persons, setPersons] = useState([])
+  
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personsService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
-  console.log('render', persons.length, 'notes')
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -36,7 +34,26 @@ const App = () => {
 
   const handleAdd = () => {
     const exists = (persons.some(person => person.name === newName))
-    !exists ? setPersons([...persons, {name: newName, number: newNumber, id: id++}]) : alert(`${newName} is already added to phonebook`)
+    if (!exists) {
+
+      let newPerson = {
+        name: newName, 
+        number: newNumber, 
+      }
+
+      personsService
+        .create(newPerson)
+        .then(response => setPersons([...persons, response]))
+      
+    }
+    else alert(`${newName} is already added to phonebook`)
+  }
+
+  console.log(persons)
+
+  const handleButton = () => {
+
+    
   }
 
   return (
@@ -73,6 +90,7 @@ const App = () => {
         <Numbers 
           persons={persons}
           search={search}
+          handleButton={handleButton}
         />
 
     </div>
