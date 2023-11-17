@@ -5,7 +5,7 @@ const Input = ({ person, handleButton}) => {
       {person.name} 
       &nbsp;{person.number}&nbsp;
       <button
-        onClick={handleButton}
+        onClick={() => handleButton(person.name, person.id)}
       >
         Delete
       </button>

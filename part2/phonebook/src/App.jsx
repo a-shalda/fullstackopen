@@ -51,9 +51,14 @@ const App = () => {
 
   console.log(persons)
 
-  const handleButton = () => {
 
-    
+  const handleButton = (name, id) => {
+
+    if (window.confirm(`Delete ${name}`)) {
+      personsService
+      .deletePerson(id)
+      setPersons(persons.filter(person => person.id !== id))
+    }
   }
 
   return (
