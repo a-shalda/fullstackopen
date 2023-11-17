@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Numbers } from './Numbers'
 import { Search } from './Search'
 import { Add } from './Add'
@@ -35,30 +34,23 @@ const App = () => {
   const handleAdd = () => {
 
     let idOfNewName;
+    let numbersDifferent = false
     
     persons.map(person => {
       if (person.name === newName) {
         idOfNewName = person.id
-      }
-    })
-    console.log(idOfNewName)
-
-    let numbersDifferent;
-
-    persons.map(person => {
-      if (person.id === idOfNewName) {
         if (person.number !== newNumber) {
           numbersDifferent = true;
         }
       }
     })
 
-    if (!idOfNewName) {
+    let newPerson = {
+      name: newName, 
+      number: newNumber, 
+    }
 
-      let newPerson = {
-        name: newName, 
-        number: newNumber, 
-      }
+    if (!idOfNewName) {
 
       personsService
         .create(newPerson)
@@ -68,13 +60,8 @@ const App = () => {
 
       if (window.confirm(`${newName} is already added to phonebook, update the phone number?`)) {
 
-        let updatedPerson = {
-          name: newName, 
-          number: newNumber, 
-        }
-
         personsService
-          .update((idOfNewName), updatedPerson)
+          .update((idOfNewName), newPerson)
           .then(response => {
             setPersons(persons.map(person => {
               if (person.id === response.id) return response
@@ -84,8 +71,6 @@ const App = () => {
       }
     }
   }
-
-  console.log(persons)
 
   const handleButton = (name, id) => {
 
