@@ -5,7 +5,7 @@ import { Search } from './Search'
 import { Add } from './Add'
 import personsService from './services/persons.js'
 
-let id = 5
+let id = 4
 
 const App = () => {
 
@@ -33,8 +33,27 @@ const App = () => {
   const handleSearch = e => setSearch(e.target.value)
 
   const handleAdd = () => {
-    const exists = (persons.some(person => person.name === newName))
-    if (!exists) {
+
+    let idOfNewName;
+    
+    persons.map(person => {
+      if (person.name === newName) {
+        idOfNewName = person.id
+      }
+    })
+    console.log(idOfNewName)
+
+    let numbersDifferent;
+
+    persons.map(person => {
+      if (person.id === idOfNewName) {
+        if (person.number !== newNumber) {
+          numbersDifferent = true;
+        }
+      }
+    })
+
+    if (!idOfNewName) {
 
       let newPerson = {
         name: newName, 
@@ -44,17 +63,33 @@ const App = () => {
       personsService
         .create(newPerson)
         .then(response => setPersons([...persons, response]))
-      
     }
-    else alert(`${newName} is already added to phonebook`)
+    else if (numbersDifferent) {
+
+      if (window.confirm(`${newName} is already added to phonebook, update the phone number?`)) {
+
+        let updatedPerson = {
+          name: newName, 
+          number: newNumber, 
+        }
+
+        personsService
+          .update((idOfNewName), updatedPerson)
+          .then(response => {
+            setPersons(persons.map(person => {
+              if (person.id === response.id) return response
+              else return person
+            }))
+          })
+      }
+    }
   }
 
   console.log(persons)
 
-
   const handleButton = (name, id) => {
 
-    if (window.confirm(`Delete ${name}`)) {
+    if (window.confirm(`Delete ${name}?`)) {
       personsService
       .deletePerson(id)
       setPersons(persons.filter(person => person.id !== id))

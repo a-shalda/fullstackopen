@@ -1,44 +1,24 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas glrgrgrgf",
-      "number": "040-123456",
+      "name": "Arto Hellas",
+      "number": "777",
       "id": 1
     },
     {
-      "name": "ffefefAda Lovelace",
+      "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": 2
     },
     {
-      "name": "Dan Abramov fefef",
+      "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck lkkll",
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "name": "Anna Shnaider",
-      "number": "+7985",
-      "id": 6
-    },
-    {
-      "name": "Alexei Shalda",
-      "number": "+79776511237",
-      "id": 7
-    },
-    {
-      "name": "Elena Shalda",
-      "number": "2424242",
-      "id": 8
-    },
-    {
-      "name": "German Shnaider",
-      "number": "2424242",
-      "id": 11
     }
   ]
 }
