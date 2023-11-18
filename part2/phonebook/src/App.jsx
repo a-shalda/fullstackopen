@@ -61,12 +61,20 @@ const App = () => {
 
       personsService
         .create(newPerson)
-        .then(response => setPersons([...persons, response]))
+        .then(response => {
+          setPersons([...persons, response])
 
-        setSuccessMessage(`${newName} was added to Phonebook`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
+          setSuccessMessage(`${newName} was added to Phonebook`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(err => {
+          setErrorMessage(`Network error`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
     else if (numbersDifferent) {
 
@@ -79,7 +87,7 @@ const App = () => {
               if (person.id === response.id) return response
               else return person
             }))
-            
+
             setSuccessMessage(`${newName}'s number was changed`)
             setTimeout(() => {
               setSuccessMessage(null)
@@ -94,6 +102,12 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       personsService
         .deletePerson(id)
+        .catch(err => {
+          setErrorMessage(`${name} was already removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
       setPersons(persons.filter(person => person.id !== id))
     }
   }
