@@ -6,10 +6,17 @@ import personsService from './services/persons.js'
 
 let id = 4
 
+const Notification = ( { errorMessage, successMessage } ) => {
+  if (errorMessage) return <p className='error'>{errorMessage}</p>
+  else if (successMessage) return <p className='success'>{successMessage}</p>
+}
+
 const App = () => {
 
   const [persons, setPersons] = useState([])
-  
+  const [errorMessage, setErrorMessage] = useState()
+  const [successMessage, setSuccessMessage] = useState()
+
   useEffect(() => {
     personsService
       .getAll()
@@ -55,6 +62,11 @@ const App = () => {
       personsService
         .create(newPerson)
         .then(response => setPersons([...persons, response]))
+
+        setSuccessMessage(`${newName} was added to Phonebook`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
     }
     else if (numbersDifferent) {
 
@@ -67,6 +79,11 @@ const App = () => {
               if (person.id === response.id) return response
               else return person
             }))
+            
+            setSuccessMessage(`${newName}'s number was changed`)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
           })
       }
     }
@@ -76,7 +93,7 @@ const App = () => {
 
     if (window.confirm(`Delete ${name}?`)) {
       personsService
-      .deletePerson(id)
+        .deletePerson(id)
       setPersons(persons.filter(person => person.id !== id))
     }
   }
@@ -84,6 +101,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification 
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+      />
+
       <p>filter shown with 
 
         <Search 
